@@ -5,9 +5,16 @@ import (
 	"fmt"
 	"os"
 	"bufio"
+	"github.com/steadysamwise4/pokedexcli/internal/pokeapi"
 )
 
-func startRepl() {
+type config struct {
+    pokeapiClient    pokeapi.Client
+    nextLocationsURL *string
+    prevLocationsURL *string
+}
+
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	registry := getCommands()
 	for {
@@ -25,7 +32,7 @@ func startRepl() {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := ct.callback()
+		err := ct.callback(cfg)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -43,7 +50,7 @@ func cleanInput(text string) []string {
 type cliCommand struct {
 	name string
 	description string
-	callback func() error
+	callback func(*config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -57,6 +64,16 @@ func getCommands() map[string]cliCommand {
 		name: "help",
 		description: "Displays a help message",
 		callback: commandHelp,
+	},
+	"map": {
+		name: "map",
+		description: "Displays next 20 map locations",
+		callback: fetchMapLocations,
+	},
+	"mapb": {
+		name: "mapb",
+		description: "Displays previous 20 map locations",
+		callback: fetchPrevMapLocations,
 	},
 }
 return registry
