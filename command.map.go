@@ -5,7 +5,7 @@ import(
 	// "github.com/steadysamwise4/pokedexcli/internal/pokeapi"
 )
 
-func fetchMapLocations(cfg *config) error {
+func fetchMapLocations(cfg *config, args ...string) error {
 	locationResp, err := cfg.pokeapiClient.ListLocations(cfg.nextLocationsURL)
 
 	if err != nil {
@@ -21,7 +21,7 @@ func fetchMapLocations(cfg *config) error {
 	return nil
 }
 
-func fetchPrevMapLocations(cfg *config) error {
+func fetchPrevMapLocations(cfg *config, args ...string) error {
 	if cfg.prevLocationsURL == nil {
     fmt.Println("you're on the first page")
     return nil
