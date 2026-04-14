@@ -93,6 +93,11 @@ func getCommands() map[string]cliCommand {
 		description: "Attempts to catch a Pokemon",
 		callback: commandCatch,
 	},
+	"inspect": {
+		name: "inspect",
+		description: "Displays pokemon info",
+		callback: commandInspect,
+	},
 }
 return registry
 }
